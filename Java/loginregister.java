@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class LoginRegister {
     public static List<Account> accounts = new ArrayList<>();
 
+    public static class Account {
         String firstName;
         String lastName;
         int age;
@@ -44,84 +45,86 @@ public class LoginRegister {
     }
 
     public static void askUserRegistration() {
-        Scanner scanner = new Scanner(System.in);
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Enter name: ");
+            String askName = scanner.nextLine();
+            System.out.print("Enter last name: ");
+            String askLastName = scanner.nextLine();
+            System.out.print("Enter age: ");
+            int askAge = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+            System.out.print("Enter username: ");
+            String askUsername = scanner.nextLine();
 
-        System.out.print("Enter name: ");
-        String askName = scanner.nextLine();
-        System.out.print("Enter last name: ");
-        String askLastName = scanner.nextLine();
-        System.out.print("Enter age: ");
-        int askAge = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
-        System.out.print("Enter username: ");
-        String askUsername = scanner.nextLine();
-
-        String askPassword = "";
-        while (true) {
-            System.out.print("Enter password: ");
-            askPassword = scanner.nextLine();
-            if (askPassword.matches(".*\\d.*")) {
-                break;
-            } else {
-                System.out.println("Invalid password! Should have a number.");
+            String askPassword = "";
+            while (true) {
+                System.out.print("Enter password: ");
+                askPassword = scanner.nextLine();
+                if (askPassword.matches(".*\\d.*")) {
+                    break;
+                } else {
+                    System.out.println("Invalid password! Should have a number.");
+                }
             }
-        }
 
-        String askEmail = "";
-        while (true) {
-            System.out.print("Enter email: ");
-            askEmail = scanner.nextLine();
-            if (askEmail.contains("@")) {
-                Account newAccount = new Account(askName, askLastName, askAge, askUsername, askPassword, askEmail);
-                accounts.add(newAccount);
-                System.out.println("Registration successful!");
-                askLoginOrRegister();  // Call the login or register function again
-                break;
-            } else {
-                System.out.println("Invalid email! Should have '@'.");
+            String askEmail = "";
+            while (true) {
+                System.out.print("Enter email: ");
+                askEmail = scanner.nextLine();
+                if (askEmail.contains("@")) {
+                    Account newAccount = new Account(askName, askLastName, askAge, askUsername, askPassword, askEmail);
+                    accounts.add(newAccount);
+                    System.out.println("Registration successful!");
+                    askLoginOrRegister();  // Call the login or register function again
+                    break;
+                } else {
+                    System.out.println("Invalid email! Should have '@'.");
+                }
             }
         }
     }
 
     public static void askUserLogin() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter username: ");
-        String askUsername = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String askPassword = scanner.nextLine();
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Enter username: ");
+            String askUsername = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String askPassword = scanner.nextLine();
 
-        Account foundAccount = null;
+            Account foundAccount = null;
 
-        for (Account account : accounts) {
-            if (account.username.equals(askUsername) && account.password.equals(askPassword)) {
-                foundAccount = account;
-                break;
+            for (Account account : accounts) {
+                if (account.username.equals(askUsername) && account.password.equals(askPassword)) {
+                    foundAccount = account;
+                    break;
+                }
             }
-        }
 
-        if (foundAccount != null) {
-            System.out.println("Login successful!");
-            displaySortedAccounts();  // Display sorted accounts after login
-            System.exit(0);  // End the program
-        } else {
-            System.out.println("Invalid account!");
-            askLoginOrRegister();  // Prompt user to log in or register again
+            if (foundAccount != null) {
+                System.out.println("Login successful!");
+                displaySortedAccounts();  // Display sorted accounts after login
+                System.exit(0);  // End the program
+            } else {
+                System.out.println("Invalid account!");
+                askLoginOrRegister();  // Prompt user to log in or register again
+            }
         }
     }
 
     public static void askLoginOrRegister() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Login or Register? ");
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Login or Register? ");
 
-        String askUser = scanner.nextLine();
+            String askUser = scanner.nextLine();
 
-        if (askUser.equalsIgnoreCase("login")) {
-            askUserLogin();
-        } else if (askUser.equalsIgnoreCase("register")) {
-            askUserRegistration();
-        } else {
-            System.out.println("Invalid input! Should be 'Login' or 'Register'.");
-            askLoginOrRegister();
+            if (askUser.equalsIgnoreCase("login")) {
+                askUserLogin();
+            } else if (askUser.equalsIgnoreCase("register")) {
+                askUserRegistration();
+            } else {
+                System.out.println("Invalid input! Should be 'Login' or 'Register'.");
+                askLoginOrRegister();
+            }
         }
     }
 }
