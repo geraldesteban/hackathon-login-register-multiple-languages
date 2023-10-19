@@ -26,43 +26,61 @@ accounts = [
     },
 ]
 
-# Display Accounts Data
-def display_accounts_data():
+# Function to sort and display accounts
+def display_sorted_accounts():
     print("----- Data Accounts Details ------")
-    sorted_accounts = sorted(accounts, key=lambda acc: acc["firstName"])
+
+    # Sort all accounts by "firstName" (case-insensitive)
+    sorted_accounts = sorted(accounts, key=lambda acc: acc["firstName"].lower())
+
+    # Iterate through the sorted accounts and print the details
     for i, acc in enumerate(sorted_accounts):
         print(f"{i + 1}: First name: {acc['firstName']} lastname: {acc['lastName']} age: {acc['age']} username: {acc['username']} password: {acc['password']} email: {acc['email']}")
 
 # Function for Reusable Asking User for Registration
 def ask_user_registration():
-    ask_name = input("Enter name: ")
-    ask_last_name = input("Enter last name: ")
-    ask_age = int(input("Enter age: "))
-    ask_username = input("Enter username: ")
+    while True:
+        ask_name = input("Enter name: ")
+        ask_last_name = input("Enter last name: ")
+        ask_age = int(input("Enter age: "))
+        ask_username = input("Enter username: ")
 
-    while True:
-        ask_password = input("Enter password: ")
-        if any(char.isdigit() for char in ask_password):
-            break
-        else:
-            print("Invalid password! Should have a number")
-    
-    while True:
-        ask_email = input("Enter email: ")
-        if "@" in ask_email:
-            accounts.append({
-                "firstName": ask_name,
-                "lastName": ask_last_name,
-                "age": ask_age,
-                "username": ask_username,
-                "password": ask_password,
-                "email": ask_email,
-            })
-            print("Registration successful!")
-            ask_login_or_register()  # Prompt user to log in or register again
-            return  # Exit the function after registration
-        else:
-            print("Invalid email! Should have '@'")
+        while True:
+            ask_password = input("Enter password: ")
+            if any(char.isdigit() for char in ask_password):
+                break
+            else:
+                print("Invalid password! Should have a number")
+
+        while True:
+            ask_email = input("Enter email: ")
+            if "@" in ask_email:
+                new_account = {
+                    "firstName": ask_name,
+                    "lastName": ask_last_name,
+                    "age": ask_age,
+                    "username": ask_username,
+                    "password": ask_password,
+                    "email": ask_email,
+                }
+                accounts.append(new_account)
+                print("Registration successful!")
+
+                # Display the updated and sorted list of accounts
+                display_sorted_accounts()
+
+                choice = input("Do you want to log in or register another account? (Login/Register/Exit): ").lower()
+                if choice == "login":
+                    ask_user_login()
+                elif choice == "register":
+                    continue  # Register another account
+                elif choice == "exit":
+                    break
+                else:
+                    print("Invalid choice!")
+
+            else:
+                print("Invalid email! Should have '@'")
 
 # Function for Reusable Asking User for Login
 def ask_user_login():
@@ -72,7 +90,7 @@ def ask_user_login():
     found_account = next((account for account in accounts if account["username"] == ask_username and account["password"] == ask_password), None)
 
     if found_account:
-        display_accounts_data()
+        display_sorted_accounts()
     else:
         print("Invalid account!")
         ask_login_or_register()  # Prompt user to log in or register again
