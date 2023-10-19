@@ -8,7 +8,7 @@ const accounts = [
     age: 22,
     username: "ley",
     password: "ley12345",
-    email: "john@gmail.com",
+    email: "ley@gmail.com",
   },
   {
     firstName: "Zero",

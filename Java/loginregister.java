@@ -25,7 +25,7 @@ public class LoginRegister {
 
     public static void main(String[] args) {
         // Add the provided accounts to the initial list
-        accounts.add(new Account("Ley", "Jivs", 22, "ley", "ley12345", "john@gmail.com"));
+        accounts.add(new Account("Ley", "Jivs", 22, "ley", "ley12345", "ley@gmail.com"));
         accounts.add(new Account("Zero", "Johnson", 34, "zero", "zero12345", "zero@gmail.com"));
         accounts.add(new Account("Luxus", "Smith", 27, "luxus", "luxus12345", "luxus@gmail.com"));
 
