@@ -66,18 +66,7 @@ def ask_user_registration():
                 accounts.append(new_account)
                 print("Registration successful!")
 
-                # Display the updated and sorted list of accounts
-                display_sorted_accounts()
-
-                choice = input("Do you want to log in or register another account? (Login/Register/Exit): ").lower()
-                if choice == "login":
-                    ask_user_login()
-                elif choice == "register":
-                    continue  # Register another account
-                elif choice == "exit":
-                    break
-                else:
-                    print("Invalid choice!")
+                ask_login_or_register()  # Call the login or register function again
 
             else:
                 print("Invalid email! Should have '@'")
@@ -90,7 +79,9 @@ def ask_user_login():
     found_account = next((account for account in accounts if account["username"] == ask_username and account["password"] == ask_password), None)
 
     if found_account:
-        display_sorted_accounts()
+        print("Login successful!")
+        display_sorted_accounts()  # Display sorted accounts after login
+        exit()  # End the program
     else:
         print("Invalid account!")
         ask_login_or_register()  # Prompt user to log in or register again
